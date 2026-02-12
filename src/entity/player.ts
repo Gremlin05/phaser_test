@@ -1,5 +1,7 @@
 import { Entity } from "./entity";
 import { SPRITES } from "../utils/constants";
+import { Magic } from "./magic";
+import { LEFT } from "phaser";
 
 export class Player extends Entity{
     textureKey: string;
@@ -7,22 +9,24 @@ export class Player extends Entity{
 
     private keys: Phaser.Types.Input.Keyboard.CursorKeys
     private skillKeys;
+    private skill: Magic;
 
     constructor(scene: Phaser.Scene, x: number, y: number, texture: string)
     {
         super(scene, x, y, texture, SPRITES.PLAYER);
 
+
         const anims = this.scene.anims;
         const animsFrameRate = 3;
         this.textureKey = texture;
         this.movespeed = 100;
-        // this.setCircle(12, 4, 5)
+        
         
         this.setSize(24, 24)
         this.setOffset(4,6)
 
         this.keys = scene.input.keyboard.createCursorKeys()
-        this.skillKeys = scene.input.keyboard.addKeys("ONE, TWO, THREE")
+        this.skillKeys = scene.input.keyboard.addKeys("Q, W, E")
         
 
         anims.create({
@@ -107,26 +111,28 @@ export class Player extends Entity{
         else
         {
             this.setVelocity(0,0)
-            this.play("idle", true)
+            this.stop()
         }
     }
 
-    castSkills() : void {
-        if (Phaser.Input.Keyboard.JustDown(this.skillKeys.ONE))
+    castSkills() : Magic {
+        if (Phaser.Input.Keyboard.JustDown(this.skillKeys.Q))
         {
-            console.log("FireBolt")
+            return(this.skill = new Magic(this.scene, this.x, this.y, SPRITES.MAGIC, "Aura", 0, this));
         }
-        else if (Phaser.Input.Keyboard.JustDown(this.skillKeys.TWO))
+        else if (Phaser.Input.Keyboard.JustDown(this.skillKeys.W))
         {
-            console.log("AURA")
+            return(this.skill = new Magic(this.scene, this.x, this.y, SPRITES.MAGIC, "AOE", 1));
         }
-        else if (Phaser.Input.Keyboard.JustDown(this.skillKeys.THREE))
+        else if (Phaser.Input.Keyboard.JustDown(this.skillKeys.E))
         {
-            console.log("AOE")
+            
+            return(this.skill = new Magic(this.scene, this.x, this.y, SPRITES.MAGIC, "Bolt", 2,));
         }
     }
 
     update(): void {
+        console.log()
         this.moveMent()
         this.castSkills()
     }
