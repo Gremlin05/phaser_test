@@ -1,0 +1,38 @@
+{
+    "Map/SizeTest": {
+        "height": 4300,
+        "width": 2
+    },
+    "activeFile": "forest.json",
+    "expandedProjectPaths": [
+        "."
+    ],
+    "fileStates": {
+        "": {
+            "scaleInDock": 2
+        },
+        "forest.json": {
+            "scale": 0.5,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 312,
+                "y": 345
+            }
+        },
+        "forest.json#forest_tiles": {
+            "scaleInDock": 0.75,
+            "scaleInEditor": 2
+        }
+    },
+    "last.imagePath": "C:/Users/Vlad Xenofontov/Desktop/react-games/phaser_test/src/assets/tiles",
+    "map.lastUsedFormat": "json",
+    "openFiles": [
+        "forest.json"
+    ],
+    "project": "forest.tiled-project",
+    "recentFiles": [
+        "forest.json"
+    ],
+    "tileset.embedInMap": true,
+    "tileset.spacing": 1
+}
