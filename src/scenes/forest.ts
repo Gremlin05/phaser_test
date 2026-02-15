@@ -69,6 +69,7 @@ export class Forest extends Phaser.Scene {
 
     this.physics.add.collider(this.player, wallsLayer);
     wallsLayer.setCollisionByExclusion([-1]);
+    this.scene.launch("UI")
 
     //---INPUT---
     this.input.setDefaultCursor("none");

@@ -17,6 +17,40 @@ export const SPRITES = {
     POINTER: "Pointer",
 }
 
+export const PLAYER_PROPERTIES = {
+    HP: 200,
+    MANA: 200,
+    HP_REGEN_RATE: 5,
+    MANA_REGEN_RATE: 15    
+}
+
+export const UI_PROPERTIES = {
+    HP_UI: {
+        x: 20,
+        y: 20,
+        text: "HP",
+        width: 200,
+        height: 20,
+    },
+
+    MANA_UI: {
+        x: 20,
+        y: 50,
+        text: "",
+        width: 200,
+        height: 24,
+    },
+    
+    FONT_SIZE: "24px",
+
+    COLORS:{
+        hpBackground: "#ff0000",
+        hpText: "#400404",
+        manaBackground:"#0befff",
+        manaText: "#0606f2"
+    }
+}
+
 export const MAGIC_PROPERTIES = {
     BOLT:{
         radius: 6,
@@ -24,6 +58,8 @@ export const MAGIC_PROPERTIES = {
         offsetY: 10,
         scaleRate: 1,
         lifetime: 2500,
+        speed: 100,
+        cost: 20
     },
 
     AOE:{
@@ -32,6 +68,7 @@ export const MAGIC_PROPERTIES = {
         offsetY: 12,
         scaleRate: 1.5,
         lifetime: 1000,
+        cost: 50
     },
 
     AURA:{
@@ -40,5 +77,6 @@ export const MAGIC_PROPERTIES = {
         offsetY: 2,
         scaleRate: 2,
         lifetime: 10000,
+        cost: 65
     },
 }
