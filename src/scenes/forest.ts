@@ -1,10 +1,13 @@
 import forestTilemapJSON from "../assets/tiles/forest.json";
-// import type { Magic } from "../entity/magic.ts";
+import type { Archer } from "../entity/enemies/archer.ts";
+import { Swordman } from "../entity/enemies/swordman.ts";
 import { Player } from "../entity/player.ts";
 import { TILES, SIZE, LAYERS, SPRITES } from "../utils/constants.ts";
 
 export class Forest extends Phaser.Scene {
   private player?: Player;
+  private swordMan?: Swordman
+  private archer?: Archer
   // private magic?: Magic;
   private pointer;
 
@@ -31,6 +34,17 @@ export class Forest extends Phaser.Scene {
       frameWidth: 16,
       frameHeight: 16,
     });
+    this.load.spritesheet(SPRITES.ENEMIES.SWORDMAN, "src/assets/characters/enemies/enemy_swordman.png",
+      {
+        frameWidth: 32,
+        frameHeight: 32
+      }
+    )
+
+    this.load.spritesheet(SPRITES.ENEMIES.ARCHER, "src/assets/characters/enemies/enemy_archer.png",{
+      frameWidth: 32,
+      frameHeight: 32,
+    })
   }
 
   create() {
@@ -57,6 +71,7 @@ export class Forest extends Phaser.Scene {
       forestMap.widthInPixels,
       forestMap.heightInPixels,
     );
+    this.cameras.main.startFollow(this.player, true)
     this.cameras.main.setZoom(2);
 
     this.physics.world.setBounds(
@@ -71,20 +86,17 @@ export class Forest extends Phaser.Scene {
     wallsLayer.setCollisionByExclusion([-1]);
     this.scene.launch("UI")
 
-    //---INPUT---
-    this.input.setDefaultCursor("none");
+    //---ENEMY---
+    this.swordMan = new Swordman(this, 200, 200,SPRITES.ENEMIES.SWORDMAN,"swordman", this.player )
+    this.swordMan = new Swordman(this, 500, 100,SPRITES.ENEMIES.ARCHER,"archer", this.player )
+    
+    //---ENEMY---
 
-    this.pointer = this.add.sprite(0, 0, SPRITES.POINTER);
-    this.pointer.setDepth(1000);
-    this.pointer.setScrollFactor(0);
-
-    this.input.on("pointermove", (pointer: Phaser.Input.Pointer) => {
-      this.pointer.setPosition(pointer.x, pointer.y);
-    });
-    //---INPUT---
+    
   }
 
   update(_?: number, delta?: number): void {
+    
     this.player.update();
   }
 }

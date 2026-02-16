@@ -15,6 +15,10 @@ export const SPRITES = {
     PLAYER: "Player",
     MAGIC: "Magic",
     POINTER: "Pointer",
+    ENEMIES:{
+        SWORDMAN: "Swordman",
+        ARCHER: "Archer",
+    }
 }
 
 export const PLAYER_PROPERTIES = {
@@ -22,6 +26,23 @@ export const PLAYER_PROPERTIES = {
     MANA: 200,
     HP_REGEN_RATE: 5,
     MANA_REGEN_RATE: 15    
+}
+
+export const ENEMIES_PROPERTIES = {
+    SWORDMAN: {
+        hp: 200,
+        damage: 50,
+        speed: 100,
+        distanceForAgro: 50
+    },
+
+    ARCHER: {
+        hp: 100,
+        damage: 25,
+        speed: 175,
+        distanceForAgro: 200
+    }
+
 }
 
 export const UI_PROPERTIES = {

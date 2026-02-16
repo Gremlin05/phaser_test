@@ -24,6 +24,9 @@ new Phaser.Game({
     autoCenter: Phaser.Scale.CENTER_BOTH
   },
   pixelArt: true,
+  render:{
+    roundPixels:true
+  }
   
 
 })

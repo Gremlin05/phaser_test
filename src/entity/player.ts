@@ -42,7 +42,7 @@ export class Player extends Entity {
     this.setSize(24, 24);
     this.setOffset(4, 6);
 
-    this.startManaRegen()
+    this.startManaRegen();
 
     this.keys = scene.input.keyboard.addKeys({
       up: Phaser.Input.Keyboard.KeyCodes.W,
@@ -131,7 +131,7 @@ export class Player extends Entity {
       Phaser.Input.Keyboard.JustDown(this.skillKeys.ONE) &&
       this.mana >= MAGIC_PROPERTIES.AURA.cost
     ) {
-      this.spendMana(MAGIC_PROPERTIES.AURA.cost)
+      this.spendMana(MAGIC_PROPERTIES.AURA.cost);
       return (this.skill = new Magic(
         this.scene,
         this.x,
@@ -145,11 +145,16 @@ export class Player extends Entity {
       Phaser.Input.Keyboard.JustDown(this.skillKeys.TWO) &&
       this.mana >= MAGIC_PROPERTIES.AOE.cost
     ) {
-      this.spendMana(MAGIC_PROPERTIES.AOE.cost)
+      this.spendMana(MAGIC_PROPERTIES.AOE.cost);
+      const pointer = this.scene.input.activePointer;
+      const worldPoint = pointer.positionToCamera(
+        this.scene.cameras.main,
+      ) as Phaser.Math.Vector2;
+
       return (this.skill = new Magic(
         this.scene,
-        this.x,
-        this.y,
+        worldPoint.x,
+        worldPoint.y,
         SPRITES.MAGIC,
         "AOE",
         1,
@@ -158,7 +163,7 @@ export class Player extends Entity {
       Phaser.Input.Keyboard.JustDown(this.skillKeys.THREE) &&
       this.mana >= MAGIC_PROPERTIES.BOLT.cost
     ) {
-      this.spendMana(MAGIC_PROPERTIES.BOLT.cost)
+      this.spendMana(MAGIC_PROPERTIES.BOLT.cost);
       const pointer = this.scene.input.activePointer;
       const worldPoint = pointer.positionToCamera(
         this.scene.cameras.main,
@@ -178,38 +183,33 @@ export class Player extends Entity {
     }
   }
 
-  spendMana(cost) : void{
-    this.mana -= cost
+  spendMana(cost): void {
+    this.mana -= cost;
 
-    this.scene.events.emit("player:manaChanged",this.mana)
+    this.scene.events.emit("player:manaChanged", this.mana);
   }
 
-  startManaRegen() : void {
+  startManaRegen(): void {
     this.manaRegenEvent = this.scene.time.addEvent({
-        delay: 1000,
-        loop: true,
-        callback: () =>{
-            this.restoreMana(this.manaRegenRate)
-        }
-    })
+      delay: 1000,
+      loop: true,
+      callback: () => {
+        this.restoreMana(this.manaRegenRate);
+      },
+    });
   }
 
   restoreMana(amount: number) {
     const oldMana = this.mana;
 
-    this.mana = Phaser.Math.Clamp(
-        this.mana + amount,
-        0,
-        this.maxMana
-    );
+    this.mana = Phaser.Math.Clamp(this.mana + amount, 0, this.maxMana);
 
     if (this.mana !== oldMana) {
-        this.scene.events.emit("player:manaChanged", this.mana, this.maxMana);
+      this.scene.events.emit("player:manaChanged", this.mana, this.maxMana);
     }
-}
+  }
 
   update(): void {
-    
     this.moveMent();
     this.castSkills();
   }
