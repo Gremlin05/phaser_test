@@ -11,6 +11,13 @@ export const LAYERS = {
     WALLS: "walls"
 }
 
+export const SKILL_TREE_TEXT = {
+    HP: "+1 к реген хп",
+    MANA: "+1 к реген маны",
+    SPELL_DAMAGE: "+1 урон от заклинаний"
+
+}
+
 export const SPRITES = {
     PLAYER: "Player",
     MAGIC: "Magic",
@@ -18,46 +25,121 @@ export const SPRITES = {
     ENEMIES:{
         SWORDMAN: "Swordman",
         ARCHER: "Archer",
+    },
+    WEAPONS:{
+        SWORD: "Sword",
+        BOW: "Bow",
+        ARRROW: "Arrow"
+    },
+    HEADS: {
+        PLAYER_HEAD: "PlayerHead",
+        SWORDMAN_HEAD: "SwordmanHead",
+        ARCHER_HEAD: "ArcherHead",
+        HEAD_FRAME: "HeadFrame"
+    },
+    BUILDINGS: {
+        ARCANE_GATES: "ArcaneGates",
+        ARCANE_GATES_COLUMN: "ArcaneGatesColumn",
+        ARCANE_TOWER: "ArcaneTower",
+        FIRE_TOWER: "FireTower",
+        BUTTON: "Button",
+        PORTAL: "Portal"
+    },
+
+    SKILL_ICONS: {
+        AURA: "Aura",
+        AOE: "AOE",
+        BOLT: "Bolt",
+    },
+
+    SKILL_KEYS: {
+        ONE: "ONE",
+        TWO: "TWO",
+        THREE: "THREE"
+    },
+
+    SKILL_TREE: {
+        SKILLS:{
+            hp: "HP",
+            mana: "MANA",
+            spellDamage: "SPELL_DAMAGE"
+        },
+
+        SKILL_TREE_CONTAINER: "SKILL_TREE_CONTAINER"
+    },
+
+    EXP_SPHERE: "EXP_SPHERE",
+
+    UI: {
+        PLAY_BUTTON: "PLAY_BUTTON",
+        BACKGROUND: "BACKGROUND",
     }
+
+    
 }
 
 export const PLAYER_PROPERTIES = {
     HP: 200,
     MANA: 200,
     HP_REGEN_RATE: 5,
-    MANA_REGEN_RATE: 15    
+    MANA_REGEN_RATE: 15,    
+    MAX_EXP: 9
 }
 
 export const ENEMIES_PROPERTIES = {
     SWORDMAN: {
         hp: 200,
         damage: 50,
-        speed: 100,
-        distanceForAgro: 50
+        speed: 50,
+        distanceForAgro: 250,
+        xp: 0.2
     },
 
     ARCHER: {
         hp: 100,
         damage: 25,
-        speed: 175,
-        distanceForAgro: 200
+        speed: 100,
+        distanceForAgro: 300,
+        distanceForKeepDistance: 200,
+        attackDelay: 2000,
+        xp: 0.4
     }
 
 }
 
+export const BUILDING_PROPERTIES = {
+    ARCANE_TOWER: {
+        distanceOffMana: 250
+    },
+    
+    FIRE_TOWER: {
+        distanceDealContinuousDamage: 150,
+        attackDelay: 200
+    }
+}
+
+export const ENEMY_STATES ={
+    IDLE: "idle",
+    PATROL: "patrol",
+    CHASE: "chase",
+    ATTACK: "attack",
+    RETURN: "return",
+    KEEP_DISTANCE:"keep_distance"
+} as const
+
 export const UI_PROPERTIES = {
     HP_UI: {
-        x: 20,
-        y: 20,
+        x: 24,
+        y: 190,
         text: "HP",
         width: 200,
-        height: 20,
+        height: 24,
     },
 
     MANA_UI: {
-        x: 20,
-        y: 50,
-        text: "",
+        x: 24,
+        y: 240,
+        text: "MANA",
         width: 200,
         height: 24,
     },
@@ -65,9 +147,9 @@ export const UI_PROPERTIES = {
     FONT_SIZE: "24px",
 
     COLORS:{
-        hpBackground: "#ff0000",
-        hpText: "#400404",
-        manaBackground:"#0befff",
+        hpBackground: 0xff0000,
+        hpText:  "#400404",
+        manaBackground: 0x0befff,
         manaText: "#0606f2"
     }
 }
@@ -80,16 +162,18 @@ export const MAGIC_PROPERTIES = {
         scaleRate: 1,
         lifetime: 2500,
         speed: 100,
-        cost: 20
+        cost: 20,
+        damage: 10
     },
 
     AOE:{
-        radius: 10,
+        radius: 12,
         offsetX: 6,
         offsetY: 12,
         scaleRate: 1.5,
         lifetime: 1000,
-        cost: 50
+        cost: 50,
+        damage: 25
     },
 
     AURA:{
@@ -98,6 +182,23 @@ export const MAGIC_PROPERTIES = {
         offsetY: 2,
         scaleRate: 2,
         lifetime: 10000,
-        cost: 65
+        cost: 65,
+        damage: 0.5
+    }
+}
+
+export const WEAPON_PROPERTIES = {
+    SWORD:{
+        damage: 50,
     },
+
+    BOW:{
+        damage: 20,
+    },
+
+    ARROW: {
+        speed: 200
+    }
+
+
 }

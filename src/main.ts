@@ -2,7 +2,7 @@ import Phaser from "phaser"
 //import forestJSON from "../src/assets/tiles/forest.json"
 //import {SIZE} from "../src/utils/constants.ts"
 import "./style.css"
-import { scenes } from "./scenes/indesx"
+import { scenes } from "./scenes"
 
 
 new Phaser.Game({
@@ -16,7 +16,7 @@ new Phaser.Game({
   physics: {
     default: "arcade",
     arcade: {
-      debug: true,
+      debug: false,
     }
   },
   scale: {

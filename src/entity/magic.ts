@@ -45,12 +45,17 @@ export class Magic extends Entity {
         this.pointerY,
       );
 
-      this.scene.physics.velocityFromRotation(
-        angle,
-        MAGIC_PROPERTIES.BOLT.speed,
-        this.body.velocity,
-      );
-      this.rotation = angle;
+       this.scene.time.delayedCall(0, () => {
+    if (!this.body) return;
+
+    this.scene.physics.velocityFromRotation(
+      angle,
+      MAGIC_PROPERTIES.BOLT.speed,
+      this.body.velocity,
+    );
+
+    this.rotation = angle;
+  });
     } else if (this.magicType == "AOE") {
     //   this.setPosition(x, y);
       
@@ -80,10 +85,6 @@ export class Magic extends Entity {
   }
 
   update(): void {
-    // if (!this.target) {
-    //   return;
-    // }
-
     if (this.magicType == "Aura") {
       this.setPosition(this.target.x, this.target.y);
     }
@@ -106,4 +107,10 @@ export class Magic extends Entity {
       this.destroy(),
     ]);
   }
+
+  getType(): String {
+    return this.magicType;
+  }
+
+  
 }

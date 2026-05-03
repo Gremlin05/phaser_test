@@ -11,22 +11,27 @@ export class Player extends Entity {
   private maxHp: number;
   private mana: number;
   private maxMana: number;
+  public exp: number;
 
   private hpRegenRate: number;
   private manaRegenRate: number;
 
-  private hpRegenEvent: Phaser.Time.TimerEvent;
-  private manaRegenEvent: Phaser.Time.TimerEvent;
+  private lastDamageTime: number = 0;
 
   private keys: Phaser.Types.Input.Keyboard.CursorKeys;
   private skillKeys;
-  private skill: Magic;
+  
+  private magicGroup: Phaser.Physics.Arcade.Group;
 
-  constructor(scene: Phaser.Scene, x: number, y: number, texture: string) {
+  public currentTarget: any = null;
+
+  constructor(scene: Phaser.Scene, x: number, y: number, texture: string, magicGroup: Phaser.Physics.Arcade.Group) {
     super(scene, x, y, texture, SPRITES.PLAYER);
 
     this.hp = PLAYER_PROPERTIES.HP;
     this.mana = PLAYER_PROPERTIES.MANA;
+
+    this.exp = 0;
 
     this.maxHp = PLAYER_PROPERTIES.HP;
     this.maxMana = PLAYER_PROPERTIES.MANA;
@@ -34,15 +39,19 @@ export class Player extends Entity {
     this.hpRegenRate = PLAYER_PROPERTIES.HP_REGEN_RATE;
     this.manaRegenRate = PLAYER_PROPERTIES.MANA_REGEN_RATE;
 
-    const anims = this.scene.anims;
-    const animsFrameRate = 3;
-    this.textureKey = texture;
+    
     this.movespeed = 100;
+
+    this.magicGroup = magicGroup;
+
 
     this.setSize(24, 24);
     this.setOffset(4, 6);
 
+    this.setDepth(2)
+
     this.startManaRegen();
+    this.startHpRegen();
 
     this.keys = scene.input.keyboard.addKeys({
       up: Phaser.Input.Keyboard.KeyCodes.W,
@@ -52,55 +61,7 @@ export class Player extends Entity {
     }) as Phaser.Types.Input.Keyboard.CursorKeys;
     this.skillKeys = scene.input.keyboard.addKeys("ONE, TWO, THREE");
 
-    anims.create({
-      key: "idle",
-      frames: anims.generateFrameNumbers(this.textureKey, {
-        start: 0,
-        end: 1,
-      }),
-      frameRate: animsFrameRate,
-      repeat: -1,
-    });
-
-    anims.create({
-      key: "down",
-      frames: anims.generateFrameNumbers(this.textureKey, {
-        start: 2,
-        end: 3,
-      }),
-      frameRate: animsFrameRate,
-      repeat: -1,
-    });
-
-    anims.create({
-      key: "right",
-      frames: anims.generateFrameNumbers(this.textureKey, {
-        start: 4,
-        end: 5,
-      }),
-      frameRate: animsFrameRate,
-      repeat: -1,
-    });
-
-    anims.create({
-      key: "left",
-      frames: anims.generateFrameNumbers(this.textureKey, {
-        start: 6,
-        end: 7,
-      }),
-      frameRate: animsFrameRate,
-      repeat: -1,
-    });
-
-    anims.create({
-      key: "up",
-      frames: anims.generateFrameNumbers(this.textureKey, {
-        start: 8,
-        end: 9,
-      }),
-      frameRate: animsFrameRate,
-      repeat: -1,
-    });
+    
   }
 
   moveMent(): void {
@@ -132,7 +93,7 @@ export class Player extends Entity {
       this.mana >= MAGIC_PROPERTIES.AURA.cost
     ) {
       this.spendMana(MAGIC_PROPERTIES.AURA.cost);
-      return (this.skill = new Magic(
+        const skill = new Magic(
         this.scene,
         this.x,
         this.y,
@@ -140,7 +101,11 @@ export class Player extends Entity {
         "Aura",
         0,
         this,
-      ));
+      );
+
+      this.magicGroup.add(skill)
+      return skill
+
     } else if (
       Phaser.Input.Keyboard.JustDown(this.skillKeys.TWO) &&
       this.mana >= MAGIC_PROPERTIES.AOE.cost
@@ -151,14 +116,18 @@ export class Player extends Entity {
         this.scene.cameras.main,
       ) as Phaser.Math.Vector2;
 
-      return (this.skill = new Magic(
+        const skill = new Magic(
         this.scene,
         worldPoint.x,
         worldPoint.y,
         SPRITES.MAGIC,
         "AOE",
         1,
-      ));
+      );
+
+      this.magicGroup.add(skill)
+      return skill
+      
     } else if (
       Phaser.Input.Keyboard.JustDown(this.skillKeys.THREE) &&
       this.mana >= MAGIC_PROPERTIES.BOLT.cost
@@ -169,7 +138,7 @@ export class Player extends Entity {
         this.scene.cameras.main,
       ) as Phaser.Math.Vector2;
 
-      return (this.skill = new Magic(
+        const skill = new Magic(
         this.scene,
         this.x,
         this.y,
@@ -179,18 +148,20 @@ export class Player extends Entity {
         null,
         worldPoint.x,
         worldPoint.y,
-      ));
+      );
+
+      this.magicGroup.add(skill)
+      return skill
     }
   }
 
   spendMana(cost): void {
     this.mana -= cost;
-
     this.scene.events.emit("player:manaChanged", this.mana);
   }
 
   startManaRegen(): void {
-    this.manaRegenEvent = this.scene.time.addEvent({
+    this.scene.time.addEvent({
       delay: 1000,
       loop: true,
       callback: () => {
@@ -207,6 +178,57 @@ export class Player extends Entity {
     if (this.mana !== oldMana) {
       this.scene.events.emit("player:manaChanged", this.mana, this.maxMana);
     }
+  }
+
+  startHpRegen(): void {
+    this.scene.time.addEvent({
+      delay: 1000,
+      loop: true,
+      
+      callback: () => {
+        if (this.scene.time.now - this.lastDamageTime < 3000) return;
+
+        this.restoreHp(this.hpRegenRate);
+      },
+    });
+  }
+
+  restoreHp(amount: number): void {
+    const oldHp = this.hp;
+
+    this.hp = Phaser.Math.Clamp(this.hp + amount, 0, this.maxHp);
+
+    if (this.hp !== oldHp) {
+      this.scene.events.emit("player:hpChanged", this.hp, this.maxHp);
+    }
+  }
+
+  takeDamage(count: number): void {
+    this.hp -= count;
+    this.lastDamageTime = this.scene.time.now;
+
+    this.scene.events.emit("player:hpChanged", this.hp, this.maxHp);
+
+    if (this.hp <= 0) {
+      this.die();
+    }
+  }
+
+  getExp() : void {
+    if(this.exp == PLAYER_PROPERTIES.MAX_EXP){
+      return
+    }
+
+    this.exp++
+    console.log(this.exp)
+
+  }
+
+
+  die() : void
+  {
+    console.log("DIE")
+    this.destroy()
   }
 
   update(): void {
