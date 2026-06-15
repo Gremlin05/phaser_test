@@ -1,14 +1,12 @@
 import Phaser from "phaser"
-//import forestJSON from "../src/assets/tiles/forest.json"
-//import {SIZE} from "../src/utils/constants.ts"
 import "./style.css"
 import { scenes } from "./scenes"
 
 
 new Phaser.Game({
-  width: 1280, //forestJSON.width * SIZE.TILE,
-  height: 720, //forestJSON.height * SIZE.TILE,
-  title: "Превед Медвед!",
+  width: 1280,
+  height: 720,
+  title: "Arcane Reborn",
   scene: scenes,
   url: import.meta.env.BASE_URL || "",
   version: import.meta.env.VERSION || "0.0.1",
@@ -16,7 +14,7 @@ new Phaser.Game({
   physics: {
     default: "arcade",
     arcade: {
-      debug: false,
+      debug: true,
     }
   },
   scale: {

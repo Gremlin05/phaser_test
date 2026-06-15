@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import { keepDistanceAction } from "./ai";
 
 describe("utils/ai", () => {
-  it("returns retreat when too close", () => {
+  it("retreat если слишком близко", () => {
     expect(keepDistanceAction(50, 100, 200)).toBe("retreat");
   });
 

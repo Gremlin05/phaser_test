@@ -25,6 +25,8 @@ export const SPRITES = {
     ENEMIES:{
         SWORDMAN: "Swordman",
         ARCHER: "Archer",
+        ENERGY_SPHERE: "Energy_Sphere",
+        ENERGY_SPAWNER: "Energy_Spawner"
     },
     WEAPONS:{
         SWORD: "Sword",
@@ -73,6 +75,21 @@ export const SPRITES = {
     UI: {
         PLAY_BUTTON: "PLAY_BUTTON",
         BACKGROUND: "BACKGROUND",
+    },
+
+    INTERACTABLES : {
+        GOLD_ORE: "GOLD_ORE",
+        AMETHYST_ORE: "AMETHYST_ORE",
+        EMERALD_ORE: "EMERALD_ORE",
+        GREEN_FLOWER: "GREEN_FLOWER",
+        RED_FLOWER: "RED_FLOWER",
+        VIOLET_FLOWER: "VIOLET_FLOWER",
+        CHEST: "CHEST",
+        EXTRACT_EFFECT: "EXTRACT_EFFECT",
+        HOVER_EFFECT: "HOVER_EFFECT",
+        INTERACT_ICON: "INTERCAT_ICON",
+        MATERIALS_ICONS: "MATERIALS_ICON",
+        
     }
 
     
@@ -91,7 +108,7 @@ export const ENEMIES_PROPERTIES = {
         hp: 200,
         damage: 50,
         speed: 50,
-        distanceForAgro: 250,
+        distanceForAgro: 150,
         xp: 0.2
     },
 
@@ -103,6 +120,21 @@ export const ENEMIES_PROPERTIES = {
         distanceForKeepDistance: 200,
         attackDelay: 2000,
         xp: 0.4
+    },
+
+    ENERGY_SPHERE:
+    {
+        hp: 160,
+        damage: 64,
+        speed: 65,
+        attackDelay: 400,
+        distanceForAgro: 100 
+    },
+
+    ENERGY_SPAWNER:
+    {
+        hp: 350,
+        attackDelay: 1000
     }
 
 }
@@ -200,5 +232,8 @@ export const WEAPON_PROPERTIES = {
         speed: 200
     }
 
+}
 
+export const INTERACTABLES_PROPRETIES = {
+    DISTANCE_FOR_INTERACT: 40,
 }

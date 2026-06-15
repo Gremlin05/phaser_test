@@ -30,7 +30,7 @@ export class Archer extends Enemy {
   private lastX: number;
   private lastY: number;
 
-  private enemyProjectilesGroup: Phaser.Physics.Arcade.Group
+  private enemyProjectilesGroup: Phaser.Physics.Arcade.Group;
 
   private bow: Weapon;
   private arrowSpeed: number;
@@ -42,8 +42,7 @@ export class Archer extends Enemy {
     texture: string,
     type: string,
     target: Player,
-    enemyProjectilesGroup: Phaser.Physics.Arcade.Group
-    
+    enemyProjectilesGroup: Phaser.Physics.Arcade.Group,
   ) {
     super(scene, x, y, texture, type, target);
 
@@ -57,9 +56,9 @@ export class Archer extends Enemy {
     this.spawnX = x;
     this.spawnY = y;
 
-    this.enemyProjectilesGroup = enemyProjectilesGroup
-    this.arrowSpeed = WEAPON_PROPERTIES.ARROW.speed
-    
+    this.enemyProjectilesGroup = enemyProjectilesGroup;
+    this.arrowSpeed = WEAPON_PROPERTIES.ARROW.speed;
+
     this.lastX = x;
     this.lastY = y;
 
@@ -88,10 +87,10 @@ export class Archer extends Enemy {
       this.safePlay("archer_idle");
     } else {
       if (Math.abs(dx) > Math.abs(dy)) {
-        this.bow.setFlipX(false)
+        this.bow.setFlipX(false);
         this.safePlay(dx > 0 ? "archer_right" : "archer_left");
       } else {
-        this.bow.setFlipX(true)
+        this.bow.setFlipX(true);
         this.safePlay(dy > 0 ? "archer_down" : "archer_up");
       }
     }
@@ -111,7 +110,11 @@ export class Archer extends Enemy {
   private keepDistance(): void {
     const body = this.getBody();
 
-    const action = keepDistanceAction(this.distance, this.minDistance, this.maxDistance);
+    const action = keepDistanceAction(
+      this.distance,
+      this.minDistance,
+      this.maxDistance,
+    );
 
     if (action === "retreat") {
       const angle = Phaser.Math.Angle.Between(
@@ -121,7 +124,10 @@ export class Archer extends Enemy {
         this.y,
       );
 
-      body.setVelocity(Math.cos(angle) * this.speed, Math.sin(angle) * this.speed);
+      body.setVelocity(
+        Math.cos(angle) * this.speed,
+        Math.sin(angle) * this.speed,
+      );
       return;
     }
 
@@ -153,8 +159,8 @@ export class Archer extends Enemy {
       this.attackCooldown = false;
     });
 
-    const arrow = new Arrow(this.scene, this.x, this.y, SPRITES.WEAPONS.ARRROW)
-    this.enemyProjectilesGroup.add(arrow)
+    const arrow = new Arrow(this.scene, this.x, this.y, SPRITES.WEAPONS.ARRROW);
+    this.enemyProjectilesGroup.add(arrow);
 
     const { vx, vy, angle } = projectileVelocity(
       arrow.x,
@@ -167,8 +173,7 @@ export class Archer extends Enemy {
     arrow.rotation = angle;
     const arrowBody = arrow.body as Phaser.Physics.Arcade.Body;
 
-    arrowBody.setVelocity(vx, vy)
-    
+    arrowBody.setVelocity(vx, vy);
   }
 
   changeState(state: (typeof ENEMY_STATES)[keyof typeof ENEMY_STATES]): void {

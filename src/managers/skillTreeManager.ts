@@ -20,7 +20,6 @@ export class SkillTreeManager extends Phaser.Scene {
 
   constructor() {
     super("SkillTreeManager");
-    
   }
 
   preload() {
@@ -42,7 +41,7 @@ export class SkillTreeManager extends Phaser.Scene {
   create() {
     const gameScene = this.scene.get("ForestScene") as any;
     this.player = gameScene.player;
-    this.scene.sleep("SkillTreeManager")
+    this.scene.sleep("SkillTreeManager");
 
     this.toolTipContainer = this.add.container(0, 0).setDepth(999).setAlpha(0);
     this.toolTipText = this.add
@@ -51,9 +50,7 @@ export class SkillTreeManager extends Phaser.Scene {
         color: "#ffffff",
       })
       .setOrigin(0.5, -0.2);
-    // this.toolTipBackground = this.add.rectangle(0, 0, 75, 25, 0xffffff)
 
-    // this.toolTipContainer.add(this.toolTipBackground)
     this.toolTipContainer.add(this.toolTipText);
 
     const { width, height } = this.cameras.main;
@@ -149,17 +146,17 @@ export class SkillTreeManager extends Phaser.Scene {
       switch (type) {
         case "hp": {
           icon.setFrame(1);
-          this.player.exp--
+          this.player.exp--;
           return;
         }
         case "mana": {
           icon.setFrame(2);
-          this.player.exp--
+          this.player.exp--;
           return;
         }
         case "damage": {
           icon.setFrame(3);
-          this.player.exp--
+          this.player.exp--;
           return;
         }
       }

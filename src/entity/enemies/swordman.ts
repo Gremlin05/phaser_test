@@ -141,21 +141,19 @@ export class Swordman extends Enemy {
           x: this.spawnX + 200,
           yoyo: true,
           repeat: -1,
-          duration: this.speed * 30,
+          duration: this.speed * 100,
         });
       } else {
         this.patrolTween = this.scene.tweens.add({
           targets: this,
-          y: this.spawnX + 200,
+          y: this.spawnY + 200,
           yoyo: true,
           repeat: -1,
-          duration: this.speed * 30,
+          duration: this.speed * 100,
         });
       }
-    }
-    else
-    {
-      this.body.stop()
+    } else {
+      this.body.stop();
     }
   }
 

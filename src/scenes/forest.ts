@@ -18,6 +18,10 @@ import { Portal } from "../entity/buildings/portal.ts";
 import { ArcaneTower } from "../entity/buildings/arcane_tower.ts";
 import { FireTower } from "../entity/buildings/fire_tower.ts";
 import { ExpSphere } from "../entity/exp.ts";
+import { Interactable } from "../entity/interactable/interactable.ts";
+import { EnergySphere } from "../entity/enemies/energy_sphere.ts";
+import { EnergySpawner } from "../entity/enemies/energy_spawner.ts";
+import { InventoryUI } from "./inventory/inventoryUI.ts";
 
 export class Forest extends Phaser.Scene {
   private player?: Player;
@@ -30,16 +34,26 @@ export class Forest extends Phaser.Scene {
   private arcaneTowerTextureKey: string;
   private fireTowerTextureKey: string;
   private expTextureKey: string;
+  private hoverEffectTextureKey: string;
+  private redFlowerTextureKey: string;
+  private greenFlowerTextureKey: string;
+  private violetFlowerTextureKey: string;
+  private energySphereTextureKey: string;
+  private energySpawnerTextureKey: string;
 
   private animsFrameRate: number;
-  private highFrameRate: number = 12
+  private highFrameRate: number = 12;
 
   private magicGroup: Phaser.Physics.Arcade.Group;
   private enemyGroup: Phaser.Physics.Arcade.Group;
   private enemyProjectileGroup: Phaser.Physics.Arcade.Group;
   private buildingGroup: Phaser.Physics.Arcade.Group;
   private buttonGroup: Phaser.Physics.Arcade.Group;
-  private expGroup: Phaser.Physics.Arcade.Group; 
+  private expGroup: Phaser.Physics.Arcade.Group;
+  private interactableGroup: Phaser.Physics.Arcade.Group;
+  private inventoryUI: InventoryUI;
+  private inventoryKey: Phaser.Input.Keyboard.Key;
+
   private glow: any;
 
   private objects: Phaser.Tilemaps.ObjectLayer;
@@ -54,6 +68,13 @@ export class Forest extends Phaser.Scene {
     this.arcaneTowerTextureKey = SPRITES.BUILDINGS.ARCANE_TOWER;
     this.fireTowerTextureKey = SPRITES.BUILDINGS.FIRE_TOWER;
     this.expTextureKey = SPRITES.EXP_SPHERE;
+    this.hoverEffectTextureKey = SPRITES.INTERACTABLES.HOVER_EFFECT;
+    this.redFlowerTextureKey = SPRITES.INTERACTABLES.RED_FLOWER;
+    this.greenFlowerTextureKey = SPRITES.INTERACTABLES.GREEN_FLOWER;
+    this.violetFlowerTextureKey = SPRITES.INTERACTABLES.VIOLET_FLOWER;
+    this.energySphereTextureKey = SPRITES.ENEMIES.ENERGY_SPHERE;
+    this.energySpawnerTextureKey = SPRITES.ENEMIES.ENERGY_SPAWNER;
+
     this.animsFrameRate = 3;
   }
 
@@ -137,7 +158,7 @@ export class Forest extends Phaser.Scene {
         frameWidth: 100,
         frameHeight: 49,
       },
-    )
+    );
 
     this.load.spritesheet(
       SPRITES.BUILDINGS.BUTTON,
@@ -145,8 +166,8 @@ export class Forest extends Phaser.Scene {
       {
         frameWidth: 32,
         frameHeight: 32,
-      }
-    )
+      },
+    );
 
     this.load.spritesheet(
       SPRITES.BUILDINGS.PORTAL,
@@ -154,8 +175,8 @@ export class Forest extends Phaser.Scene {
       {
         frameWidth: 32,
         frameHeight: 32,
-      }
-    )
+      },
+    );
 
     this.load.spritesheet(
       SPRITES.BUILDINGS.ARCANE_TOWER,
@@ -163,8 +184,8 @@ export class Forest extends Phaser.Scene {
       {
         frameWidth: 36,
         frameHeight: 72,
-      }
-    )
+      },
+    );
 
     this.load.spritesheet(
       SPRITES.BUILDINGS.FIRE_TOWER,
@@ -172,15 +193,108 @@ export class Forest extends Phaser.Scene {
       {
         frameWidth: 32,
         frameHeight: 72,
-      }
-    )
+      },
+    );
 
     this.load.spritesheet(
       SPRITES.EXP_SPHERE,
       "src/assets/skillTree/exp_sphere.png",
       {
         frameWidth: 32,
-        frameHeight: 32
+        frameHeight: 32,
+      },
+    );
+
+    this.load.spritesheet(
+      SPRITES.INTERACTABLES.AMETHYST_ORE,
+      "src/assets/interactable/ore/ametisy_ore.png",
+      {
+        frameWidth: 32,
+        frameHeight: 32,
+      },
+    );
+
+    this.load.spritesheet(
+      SPRITES.INTERACTABLES.GOLD_ORE,
+      "src/assets/interactable/ore/gold_ore.png",
+      {
+        frameWidth: 32,
+        frameHeight: 32,
+      },
+    );
+
+    this.load.spritesheet(
+      SPRITES.INTERACTABLES.EMERALD_ORE,
+      "src/assets/interactable/ore/emerald_ore.png",
+      {
+        frameWidth: 32,
+        frameHeight: 32,
+      },
+    );
+    this.load.spritesheet(
+      SPRITES.INTERACTABLES.VIOLET_FLOWER,
+      "src/assets/interactable/flowers/flower_violet.png",
+      {
+        frameWidth: 32,
+        frameHeight: 32,
+      },
+    );
+    this.load.spritesheet(
+      SPRITES.INTERACTABLES.GREEN_FLOWER,
+      "src/assets/interactable/flowers/flower_green.png",
+      {
+        frameWidth: 32,
+        frameHeight: 32,
+      },
+    );
+    this.load.spritesheet(
+      SPRITES.INTERACTABLES.RED_FLOWER,
+      "src/assets/interactable/flowers/flower_red.png",
+      {
+        frameWidth: 32,
+        frameHeight: 32,
+      },
+    );
+    this.load.spritesheet(
+      SPRITES.INTERACTABLES.HOVER_EFFECT,
+      "src/assets/interactable/hover_effect.png",
+      {
+        frameWidth: 32,
+        frameHeight: 32,
+      },
+    );
+
+    this.load.spritesheet(
+      SPRITES.INTERACTABLES.INTERACT_ICON,
+      "src/assets/interactable/interact_icon.png",
+      {
+        frameWidth: 32,
+        frameHeight: 32,
+      },
+    );
+    this.load.spritesheet(
+      SPRITES.ENEMIES.ENERGY_SPHERE,
+      "src/assets/characters/enemies/energy_sphere.png",
+      {
+        frameWidth: 32,
+        frameHeight: 32,
+      },
+    );
+    this.load.spritesheet(
+      SPRITES.ENEMIES.ENERGY_SPAWNER,
+      "src/assets/characters/enemies/energy_spawner.png",
+      {
+        frameWidth: 32,
+        frameHeight: 32,
+      },
+    );
+
+    this.load.spritesheet(
+      SPRITES.INTERACTABLES.MATERIALS_ICONS,
+      "src/assets/interactable/icons/materials.png",
+      {
+        frameWidth: 32,
+        frameHeight: 32,
       }
     )
   }
@@ -344,53 +458,129 @@ export class Forest extends Phaser.Scene {
     });
     //---SWORDMAN---
 
+    //---ENERGY_SPHERE---
+    this.anims.create({
+      key: "energy_sphere",
+      frames: this.anims.generateFrameNumbers(this.energySphereTextureKey, {
+        start: 0,
+        end: 14,
+      }),
+      frameRate: this.highFrameRate,
+      repeat: -1,
+    });
+    //---ENERGY_SPHERE---
+
+    //---ENERGY_SPAWNER---
+    this.anims.create({
+      key: "energy_spawner",
+      frames: this.anims.generateFrameNumbers(this.energySpawnerTextureKey, {
+        start: 0,
+        end: 3,
+      }),
+      frameRate: this.highFrameRate,
+      repeat: -1,
+    });
+    //---ENERGY_SPAWNER---
+
     //---PORTAL---
     this.anims.create({
       key: "portal",
-      frames: this.anims.generateFrameNames(this.portalTextureKey,{
-        start:0,
-        end:4
+      frames: this.anims.generateFrameNames(this.portalTextureKey, {
+        start: 0,
+        end: 4,
       }),
       frameRate: this.highFrameRate,
-      repeat: -1
+      repeat: -1,
     });
     //---PORTAL---
 
     //---ARCANE_TOWER---
     this.anims.create({
       key: "arcane_tower",
-      frames: this.anims.generateFrameNames(this.arcaneTowerTextureKey,{
+      frames: this.anims.generateFrameNames(this.arcaneTowerTextureKey, {
         start: 0,
         end: 1,
       }),
       frameRate: this.animsFrameRate,
-      repeat: -1
-    })
+      repeat: -1,
+    });
     //---ARCANE_TOWER---
 
     //---FIRE_TOWER---
     this.anims.create({
       key: "fire_tower",
-      frames: this.anims.generateFrameNames(this.fireTowerTextureKey,{
+      frames: this.anims.generateFrameNames(this.fireTowerTextureKey, {
         start: 0,
         end: 1,
       }),
       frameRate: this.animsFrameRate,
-      repeat: -1
-    })
+      repeat: -1,
+    });
     //---FIRE_TOWER---
 
     //---EXP---
     this.anims.create({
       key: "exp",
-      frames: this.anims.generateFrameNames(this.expTextureKey,{
+      frames: this.anims.generateFrameNames(this.expTextureKey, {
         start: 0,
         end: 12,
       }),
       frameRate: this.highFrameRate,
-      repeat: -1
-    })
+      repeat: -1,
+    });
     //---EXP---
+
+    //---HOVER_EFFECT---
+    this.anims.create({
+      key: "hover",
+      frames: this.anims.generateFrameNames(this.hoverEffectTextureKey, {
+        start: 0,
+        end: 5,
+      }),
+      frameRate: this.highFrameRate,
+      repeat: -1,
+    });
+    //---HOVER_EFFECT---
+
+    //---FLOWERS---
+    this.anims.create({
+      key: "red_flower",
+      frames: this.anims.generateFrameNames(this.redFlowerTextureKey, {
+        start: 0,
+        end: 5,
+      }),
+      frameRate: this.highFrameRate,
+      repeat: -1,
+    });
+
+    this.anims.create({
+      key: "green_flower",
+      frames: this.anims.generateFrameNames(this.greenFlowerTextureKey, {
+        start: 0,
+        end: 5,
+      }),
+      frameRate: this.highFrameRate,
+      repeat: -1,
+    });
+
+    this.anims.create({
+      key: "violet_flower",
+      frames: this.anims.generateFrameNames(this.violetFlowerTextureKey, {
+        start: 0,
+        end: 5,
+      }),
+      frameRate: this.highFrameRate,
+      repeat: -1,
+    });
+    //---FLOWERS---
+
+    this.events.on("inventoryChanged", (items) => {
+      this.inventoryUI.updateInventory(items);
+    });
+
+    this.inventoryKey = this.input.keyboard.addKey(
+      Phaser.Input.Keyboard.KeyCodes.I,
+    );
 
     //#endregion ANIMS
 
@@ -413,9 +603,10 @@ export class Forest extends Phaser.Scene {
     this.magicGroup = this.physics.add.group();
     this.enemyGroup = this.physics.add.group();
     this.enemyProjectileGroup = this.physics.add.group();
-    this.buildingGroup = this.physics.add.group()
+    this.buildingGroup = this.physics.add.group();
     this.buttonGroup = this.physics.add.group();
     this.expGroup = this.physics.add.group();
+    this.interactableGroup = this.physics.add.group();
     //#endregion GROUPS
 
     //#region  PLAYER
@@ -427,11 +618,11 @@ export class Forest extends Phaser.Scene {
           obj.x,
           obj.y,
           SPRITES.PLAYER,
-          this.magicGroup
-          
+          this.magicGroup,
         );
       }
     });
+    
 
     this.cameras.main.startFollow(this.player);
     this.cameras.main.setBounds(
@@ -454,23 +645,19 @@ export class Forest extends Phaser.Scene {
     this.physics.add.collider(this.player, wallsLayer);
     wallsLayer.setCollisionByExclusion([-1]);
     this.scene.launch("UI");
-    this.scene.launch("SkillTreeManager")
+    this.scene.launch("SkillTreeManager");
+    this.scene.launch("INV", {player: this.player})
+    this.inventoryUI = this.scene.get("INV") as InventoryUI;
     //#endregion PLAYER
 
     //#region EXP
-    this.objects.objects.forEach((obj: any) =>
-    {
-       if (obj.name === "exp") {
-        const exp = new ExpSphere(
-          this,
-          obj.x,
-          obj.y,
-          SPRITES.EXP_SPHERE,
-        );
+    this.objects.objects.forEach((obj: any) => {
+      if (obj.name === "exp") {
+        const exp = new ExpSphere(this, obj.x, obj.y, SPRITES.EXP_SPHERE);
 
         this.expGroup.add(exp);
       }
-    })
+    });
     //#endregion EXP
 
     //#region BUILDINGS
@@ -482,7 +669,7 @@ export class Forest extends Phaser.Scene {
           obj.x,
           obj.y,
           SPRITES.BUILDINGS.ARCANE_TOWER,
-          this.player
+          this.player,
         );
 
         this.buildingGroup.add(building);
@@ -496,7 +683,7 @@ export class Forest extends Phaser.Scene {
           obj.x,
           obj.y,
           SPRITES.BUILDINGS.FIRE_TOWER,
-          this.player
+          this.player,
         );
 
         this.buildingGroup.add(building);
@@ -538,7 +725,7 @@ export class Forest extends Phaser.Scene {
           SPRITES.BUILDINGS.ARCANE_GATES_COLUMN,
           obj.properties.find((p: any) => p.name === "facingRight").value,
         );
-        this.buildingGroup.add(building)
+        this.buildingGroup.add(building);
       }
     });
 
@@ -551,10 +738,102 @@ export class Forest extends Phaser.Scene {
           SPRITES.BUILDINGS.BUTTON,
           this.player,
         );
-        this.buttonGroup.add(button)
+        this.buttonGroup.add(button);
       }
     });
     //#endregion BUILDINGS
+
+    //#region INTERACTABLES
+
+    this.objects.objects.forEach((obj: any) => {
+      if (obj.name === "gold_ore") {
+        const interactable = new Interactable(
+          this,
+          obj.x,
+          obj.y - obj.height,
+          SPRITES.INTERACTABLES.GOLD_ORE,
+          obj.name,
+          obj.properties.find((p: any) => p.name === "type").value,
+          this.player,
+        );
+        this.interactableGroup.add(interactable);
+      }
+    });
+
+    this.objects.objects.forEach((obj: any) => {
+      if (obj.name === "emerald_ore") {
+        const interactable = new Interactable(
+          this,
+          obj.x,
+          obj.y - obj.height,
+          SPRITES.INTERACTABLES.EMERALD_ORE,
+          obj.name,
+          obj.properties.find((p: any) => p.name === "type").value,
+          this.player,
+        );
+        this.interactableGroup.add(interactable);
+      }
+    });
+
+    this.objects.objects.forEach((obj: any) => {
+      if (obj.name === "amethyst_ore") {
+        const interactable = new Interactable(
+          this,
+          obj.x,
+          obj.y - obj.height,
+          SPRITES.INTERACTABLES.AMETHYST_ORE,
+          obj.name,
+          obj.properties.find((p: any) => p.name === "type").value,
+          this.player,
+        );
+        this.interactableGroup.add(interactable);
+      }
+    });
+
+    this.objects.objects.forEach((obj: any) => {
+      if (obj.name === "red_flower") {
+        const interactable = new Interactable(
+          this,
+          obj.x,
+          obj.y - obj.height,
+          SPRITES.INTERACTABLES.RED_FLOWER,
+          obj.name,
+          obj.properties.find((p: any) => p.name === "type").value,
+          this.player,
+        );
+        this.interactableGroup.add(interactable);
+      }
+    });
+    this.objects.objects.forEach((obj: any) => {
+      if (obj.name === "green_flower") {
+        const interactable = new Interactable(
+          this,
+          obj.x,
+          obj.y - obj.height,
+          SPRITES.INTERACTABLES.GREEN_FLOWER,
+          obj.name,
+          obj.properties.find((p: any) => p.name === "type").value,
+          this.player,
+        );
+        this.interactableGroup.add(interactable);
+      }
+    });
+    this.objects.objects.forEach((obj: any) => {
+      if (obj.name === "violet_flower") {
+        const interactable = new Interactable(
+          this,
+          obj.x,
+          obj.y - obj.height,
+          SPRITES.INTERACTABLES.VIOLET_FLOWER,
+          obj.name,
+          obj.properties.find((p: any) => p.name === "type").value,
+          this.player,
+        );
+        this.interactableGroup.add(interactable);
+      }
+    });
+
+    //#endregion
 
     //#region ENEMY
     this.objects.objects.forEach((obj: any) => {
@@ -567,10 +846,11 @@ export class Forest extends Phaser.Scene {
           "swordman",
           this.player,
           obj.properties.find((p: any) => p.name === "isPatrolling").value,
-          obj.properties.find((p: any) => p.name === "patrollingDirection").value,
+          obj.properties.find((p: any) => p.name === "patrollingDirection")
+            .value,
         );
 
-        this.enemies.push(enemy);
+        // this.enemies.push(enemy);
         this.enemyGroup.add(enemy);
       }
       if (obj.name === "archer") {
@@ -584,7 +864,34 @@ export class Forest extends Phaser.Scene {
           this.enemyProjectileGroup,
         );
 
-        this.enemies.push(enemy);
+        // this.enemies.push(enemy);
+        this.enemyGroup.add(enemy);
+      }
+      if (obj.name === "energy_sphere") {
+        const enemy = new EnergySphere(
+          this,
+          obj.x,
+          obj.y,
+          SPRITES.ENEMIES.ENERGY_SPHERE,
+          "energy_sphere",
+          this.player,
+          1,
+        );
+
+        // this.enemies.push(enemy);
+        this.enemyGroup.add(enemy);
+      }
+      if (obj.name === "energy_spawner") {
+        const enemy = new EnergySpawner(
+          this,
+          obj.x,
+          obj.y,
+          SPRITES.ENEMIES.ENERGY_SPHERE,
+          "energy_spawner",
+          this.player,
+        );
+
+        // this.enemies.push(enemy);
         this.enemyGroup.add(enemy);
       }
     });
@@ -613,10 +920,32 @@ export class Forest extends Phaser.Scene {
     );
     //#endregion ENEMY_INPUTS
 
+    //#region INTERACTABLES_INPUTS
+    this.input.on(
+      "gameobjectover",
+      (_pointer: Phaser.Input.Pointer, gameObject: any) => {
+        if (gameObject instanceof Interactable) {
+          gameObject.showHoverEffect();
+        }
+      },
+    );
+
+    this.input.on(
+      "gameobjectout",
+      (_pointer: Phaser.Input.Pointer, gameObject: any) => {
+        if (gameObject instanceof Interactable) {
+          gameObject.hideHoverEffect();
+        }
+      },
+    );
+
+    //#endregion INTERACTABLES_INPUTS
+
     //#region COLLIDERS
     this.physics.add.collider(this.enemyGroup, wallsLayer);
     this.physics.add.collider(this.player, this.buildingGroup);
     this.physics.add.collider(this.enemyGroup, this.buildingGroup);
+    this.physics.add.collider(this.player, this.interactableGroup);
 
     this.physics.add.overlap(
       this.enemyGroup,
@@ -630,7 +959,6 @@ export class Forest extends Phaser.Scene {
         } else if (magic.getType() === "Aura") {
           enemy.takeDamage(MAGIC_PROPERTIES.AURA.damage);
         }
-        console.log(enemy.hp);
       },
       null,
       this,
@@ -660,49 +988,62 @@ export class Forest extends Phaser.Scene {
       },
     );
 
-    // this.physics.add.collider(this.enemyGroup, this.enemyGroup);
-    this.physics.add.overlap(this.player, this.expGroup, (player: any, exp: any) => {
-      player.getExp()
-      exp.destroy()
-    })
+    this.physics.add.collider(this.enemyGroup, this.enemyGroup);
+    this.physics.add.overlap(
+      this.player,
+      this.expGroup,
+      (player: any, exp: any) => {
+        player.getExp();
+        exp.destroy();
+      },
+    );
     //#endregion COLLIDERS
-  
+
     //#region INPUTS
-    this.input.keyboard.on("keydown-T", () =>{
-      if(this.scene.isSleeping("SkillTreeManager"))
-      {
-        this.scene.wake("SkillTreeManager")
+    this.input.keyboard.on("keydown-T", () => {
+      if (this.scene.isSleeping("SkillTreeManager")) {
+        this.scene.wake("SkillTreeManager");
+      } else {
+        this.scene.sleep("SkillTreeManager");
       }
-      else
-      {
-        this.scene.sleep("SkillTreeManager")
-      }
-    })
+    });
     //#endregion INPUTS
   }
 
-
   update(_?: number, __?: number): void {
     this.player.update();
-
-    for (const enemy of this.enemies) {
-      if (enemy.active) enemy.update();
+    if (Phaser.Input.Keyboard.JustDown(this.inventoryKey)) {
+      this.inventoryUI.toggle();
+      console.log("INV");
+      console.log(this.inventoryUI)
     }
 
-    this.buttonGroup.children.each((child: any) =>{
-      if(child.update)
-      {
-        child.update()
+    this.enemyGroup.children.each((child: any) => {
+      if (child.update) {
+        child.update();
       }
-      return true
-    })
+      return true;
+    });
 
-    this.buildingGroup.children.each((child: any) =>{
-      if(child.update)
-      {
-        child.update()
+    this.buttonGroup.children.each((child: any) => {
+      if (child.update) {
+        child.update();
       }
-      return true
-    })
+      return true;
+    });
+
+    this.buildingGroup.children.each((child: any) => {
+      if (child.update) {
+        child.update();
+      }
+      return true;
+    });
+
+    this.interactableGroup.children.each((child: any) => {
+      if (child.update) {
+        child.update();
+      }
+      return true;
+    });
   }
 }

@@ -247,10 +247,6 @@ export class UI extends Phaser.Scene {
         this.enemyHpBar.setSize(this.enemyHpWidth, UI_PROPERTIES.HP_UI.height);
       },
     );
-
-    
-
-    
   }
 
   update(): void {
@@ -291,6 +287,16 @@ export class UI extends Phaser.Scene {
 
     if (target.enemyType === "archer") {
       this.currentEnemyHead.setTexture(SPRITES.HEADS.ARCHER_HEAD, 2);
+    }
+
+    if (target.enemyType === "energy_sphere")
+    {
+      this.currentEnemyHead.setTexture(SPRITES.ENEMIES.ENERGY_SPHERE);
+    }
+
+    if (target.enemyType === "energy_spawner")
+    {
+      this.currentEnemyHead.setTexture(SPRITES.ENEMIES.ENERGY_SPAWNER);
     }
   }
 }

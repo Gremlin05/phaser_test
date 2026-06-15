@@ -9,32 +9,134 @@
     ],
     "fileStates": {
         "": {
-            "scaleInDock": 2
+            "scaleInDock": 1
         },
         "forest.json": {
-            "scale": 0.75,
+            "scale": 1,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 406.66666666666674,
-                "y": 1147.3333333333333
+                "x": 477,
+                "y": 1333.5
             }
         },
+        "forest.json#Box1": {
+            "scaleInDock": 1
+        },
+        "forest.json#Box2": {
+            "dynamicWrapping": true,
+            "scaleInDock": 1
+        },
+        "forest.json#Box3": {
+            "dynamicWrapping": false,
+            "scaleInDock": 1
+        },
+        "forest.json#Box4": {
+            "scaleInDock": 1
+        },
+        "forest.json#Dirt6": {
+            "dynamicWrapping": true
+        },
+        "forest.json#Lamp1": {
+            "dynamicWrapping": true,
+            "scaleInEditor": 1
+        },
+        "forest.json#Log1": {
+            "dynamicWrapping": false,
+            "scaleInDock": 1
+        },
+        "forest.json#Log2": {
+            "scaleInDock": 1
+        },
+        "forest.json#Log3": {
+            "scaleInDock": 1
+        },
+        "forest.json#Log4": {
+            "dynamicWrapping": true,
+            "scaleInDock": 1
+        },
+        "forest.json#Pointer1": {
+            "dynamicWrapping": false,
+            "scaleInDock": 1
+        },
+        "forest.json#Tree1": {
+            "scaleInDock": 1
+        },
+        "forest.json#Tree2": {
+            "scaleInDock": 1
+        },
+        "forest.json#`12`12": {
+            "dynamicWrapping": true
+        },
+        "forest.json#camp1": {
+            "scaleInDock": 1
+        },
+        "forest.json#camp2": {
+            "scaleInDock": 1
+        },
+        "forest.json#camp3": {
+            "scaleInDock": 1
+        },
+        "forest.json#camp4": {
+            "scaleInDock": 1
+        },
+        "forest.json#camp5": {
+            "scaleInDock": 1
+        },
+        "forest.json#camp6": {
+            "dynamicWrapping": true,
+            "scaleInDock": 1
+        },
+        "forest.json#forest_new_tiles": {
+            "dynamicWrapping": false,
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
         "forest.json#forest_tiles": {
+            "dynamicWrapping": false,
             "scaleInDock": 1,
             "scaleInEditor": 2
+        },
+        "forest.json#house_1": {
+            "dynamicWrapping": true,
+            "scaleInDock": 1
+        },
+        "forest.json#house_2": {
+            "dynamicWrapping": true,
+            "scaleInDock": 1
+        },
+        "forest.json#house_3": {
+            "dynamicWrapping": false,
+            "scaleInDock": 1
+        },
+        "forest.json#house_4": {
+            "dynamicWrapping": true,
+            "scaleInDock": 1
+        },
+        "forest.json#houses": {
+            "dynamicWrapping": true
+        },
+        "forest.json#pointer2": {
+            "scaleInDock": 1
+        },
+        "forest.json#pointer3": {
+            "scaleInDock": 1
+        },
+        "forest.json#pointer4": {
+            "scaleInDock": 1
         }
     },
-    "last.imagePath": "C:/Users/Vlad Xenofontov/Desktop/react-games/phaser_test/src/assets/tiles",
+    "last.imagePath": "C:/Users/Vlad Xenofontov/Desktop/tiles/tiles/1/1 Tiles",
     "map.lastUsedFormat": "json",
     "openFiles": [
         "forest.json"
     ],
     "project": "forest.tiled-project",
-    "property.type": "bool",
+    "property.type": "string",
     "recentFiles": [
         "forest.json"
     ],
     "resizeMap.removeObjects": false,
     "tileset.embedInMap": true,
-    "tileset.spacing": 1
+    "tileset.spacing": 1,
+    "tileset.type": 1
 }

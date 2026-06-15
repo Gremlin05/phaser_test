@@ -17,16 +17,17 @@ export class ArcaneTower extends Build {
   ) {
     super(scene, x, y, texture);
 
-    this.distanceOffRegenMana = BUILDING_PROPERTIES.ARCANE_TOWER.distanceOffMana
+    this.distanceOffRegenMana =
+      BUILDING_PROPERTIES.ARCANE_TOWER.distanceOffMana;
 
     this.target = target;
     this.rangeCircle = scene.add.graphics();
-    this.rangeCircle.lineStyle(2, 0x00BFFF, 0.8);
+    this.rangeCircle.lineStyle(2, 0x00bfff, 0.8);
     this.rangeCircle.strokeCircle(0, 0, this.distanceOffRegenMana);
-    this.rangeCircle.setAlpha(0.3)
-    this.rangeCircle.setPosition(x, y)
+    this.rangeCircle.setAlpha(0.3);
+    this.rangeCircle.setPosition(x, y);
 
-    this.setScale(1.5)
+    this.setScale(1.5);
 
     this.play("arcane_tower");
   }
@@ -36,10 +37,9 @@ export class ArcaneTower extends Build {
   }
 
   update(): void {
-
-    this.checkDistance()
+    this.checkDistance();
     if (this.distance <= this.distanceOffRegenMana) {
-      this.target.restoreMana(-10)
+      this.target.restoreMana(-10);
     }
   }
 }

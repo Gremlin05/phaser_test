@@ -2,6 +2,8 @@ import { Entity } from "./entity";
 import { MAGIC_PROPERTIES, SPRITES } from "../utils/constants";
 import { PLAYER_PROPERTIES } from "../utils/constants";
 import { Magic } from "./magic";
+import { Inventory } from "../scenes/inventory/inventory";
+import type { Interactable } from "./interactable/interactable";
 
 export class Player extends Entity {
   textureKey: string;
@@ -12,6 +14,7 @@ export class Player extends Entity {
   private mana: number;
   private maxMana: number;
   public exp: number;
+  public inventory: Inventory
 
   private hpRegenRate: number;
   private manaRegenRate: number;
@@ -19,13 +22,21 @@ export class Player extends Entity {
   private lastDamageTime: number = 0;
 
   private keys: Phaser.Types.Input.Keyboard.CursorKeys;
+  private interactKey: Phaser.Input.Keyboard.Key;
   private skillKeys;
-  
+
   private magicGroup: Phaser.Physics.Arcade.Group;
 
   public currentTarget: any = null;
+  public interactTarget: Interactable
 
-  constructor(scene: Phaser.Scene, x: number, y: number, texture: string, magicGroup: Phaser.Physics.Arcade.Group) {
+  constructor(
+    scene: Phaser.Scene,
+    x: number,
+    y: number,
+    texture: string,
+    magicGroup: Phaser.Physics.Arcade.Group,
+  ) {
     super(scene, x, y, texture, SPRITES.PLAYER);
 
     this.hp = PLAYER_PROPERTIES.HP;
@@ -39,16 +50,14 @@ export class Player extends Entity {
     this.hpRegenRate = PLAYER_PROPERTIES.HP_REGEN_RATE;
     this.manaRegenRate = PLAYER_PROPERTIES.MANA_REGEN_RATE;
 
-    
     this.movespeed = 100;
 
     this.magicGroup = magicGroup;
 
-
     this.setSize(24, 24);
     this.setOffset(4, 6);
 
-    this.setDepth(2)
+    this.setDepth(2);
 
     this.startManaRegen();
     this.startHpRegen();
@@ -60,8 +69,9 @@ export class Player extends Entity {
       right: Phaser.Input.Keyboard.KeyCodes.D,
     }) as Phaser.Types.Input.Keyboard.CursorKeys;
     this.skillKeys = scene.input.keyboard.addKeys("ONE, TWO, THREE");
+    this.interactKey = scene.input.keyboard.addKey("E")
 
-    
+    this.inventory = new Inventory(20)
   }
 
   moveMent(): void {
@@ -93,7 +103,7 @@ export class Player extends Entity {
       this.mana >= MAGIC_PROPERTIES.AURA.cost
     ) {
       this.spendMana(MAGIC_PROPERTIES.AURA.cost);
-        const skill = new Magic(
+      const skill = new Magic(
         this.scene,
         this.x,
         this.y,
@@ -103,9 +113,8 @@ export class Player extends Entity {
         this,
       );
 
-      this.magicGroup.add(skill)
-      return skill
-
+      this.magicGroup.add(skill);
+      return skill;
     } else if (
       Phaser.Input.Keyboard.JustDown(this.skillKeys.TWO) &&
       this.mana >= MAGIC_PROPERTIES.AOE.cost
@@ -116,7 +125,7 @@ export class Player extends Entity {
         this.scene.cameras.main,
       ) as Phaser.Math.Vector2;
 
-        const skill = new Magic(
+      const skill = new Magic(
         this.scene,
         worldPoint.x,
         worldPoint.y,
@@ -125,9 +134,8 @@ export class Player extends Entity {
         1,
       );
 
-      this.magicGroup.add(skill)
-      return skill
-      
+      this.magicGroup.add(skill);
+      return skill;
     } else if (
       Phaser.Input.Keyboard.JustDown(this.skillKeys.THREE) &&
       this.mana >= MAGIC_PROPERTIES.BOLT.cost
@@ -138,7 +146,7 @@ export class Player extends Entity {
         this.scene.cameras.main,
       ) as Phaser.Math.Vector2;
 
-        const skill = new Magic(
+      const skill = new Magic(
         this.scene,
         this.x,
         this.y,
@@ -150,8 +158,8 @@ export class Player extends Entity {
         worldPoint.y,
       );
 
-      this.magicGroup.add(skill)
-      return skill
+      this.magicGroup.add(skill);
+      return skill;
     }
   }
 
@@ -184,10 +192,9 @@ export class Player extends Entity {
     this.scene.time.addEvent({
       delay: 1000,
       loop: true,
-      
+
       callback: () => {
         if (this.scene.time.now - this.lastDamageTime < 3000) return;
-
         this.restoreHp(this.hpRegenRate);
       },
     });
@@ -214,24 +221,35 @@ export class Player extends Entity {
     }
   }
 
-  getExp() : void {
-    if(this.exp == PLAYER_PROPERTIES.MAX_EXP){
-      return
+  getExp(): void {
+    if (this.exp == PLAYER_PROPERTIES.MAX_EXP) {
+      return;
     }
 
-    this.exp++
-    console.log(this.exp)
-
+    this.exp++;
+  }
+  die(): void {
+    this.scene.scene.start("Menu");
+    this.scene.scene.stop("UI");
+    this.destroy();
   }
 
+  handleInteract(): void {
+    if (!Phaser.Input.Keyboard.JustDown(this.interactKey))
+    {
+      return;
+    }
 
-  die() : void
-  {
-    console.log("DIE")
-    this.destroy()
+    const nearby = this.interactTarget;
+    if(nearby && nearby.distance <= nearby.distanceForInteract)
+    {
+      nearby.giveLoot();
+      console.log(this.inventory.getItems());
+    }
   }
 
   update(): void {
+    this.handleInteract();
     this.moveMent();
     this.castSkills();
   }
