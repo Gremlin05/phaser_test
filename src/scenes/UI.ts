@@ -34,31 +34,31 @@ export class UI extends Phaser.Scene {
   preload() {
     this.load.spritesheet(
       SPRITES.HEADS.PLAYER_HEAD,
-      "src/assets/heads/heads.png",
+      "assets/heads/heads.png",
       { frameWidth: 30, frameHeight: 30 },
     );
 
     this.load.spritesheet(
       SPRITES.HEADS.SWORDMAN_HEAD,
-      "src/assets/heads/heads.png",
+      "assets/heads/heads.png",
       { frameWidth: 30, frameHeight: 30 },
     );
 
     this.load.spritesheet(
       SPRITES.HEADS.ARCHER_HEAD,
-      "src/assets/heads/heads.png",
+      "assets/heads/heads.png",
       { frameWidth: 30, frameHeight: 30 },
     );
 
     this.load.spritesheet(
       SPRITES.HEADS.HEAD_FRAME,
-      "src/assets/heads/head_frame.png",
+      "assets/heads/head_frame.png",
       { frameWidth: 36, frameHeight: 36 },
     );
 
     this.load.spritesheet(
       SPRITES.SKILL_ICONS.AURA,
-      "src/assets/icons/skills/skills.png",
+      "assets/icons/skills/skills.png",
       {
         frameWidth: 32,
         frameHeight: 32,
@@ -67,7 +67,7 @@ export class UI extends Phaser.Scene {
 
     this.load.spritesheet(
       SPRITES.SKILL_ICONS.AOE,
-      "src/assets/icons/skills/skills.png",
+      "assets/icons/skills/skills.png",
       {
         frameWidth: 32,
         frameHeight: 32,
@@ -76,7 +76,7 @@ export class UI extends Phaser.Scene {
 
     this.load.spritesheet(
       SPRITES.SKILL_ICONS.BOLT,
-      "src/assets/icons/skills/skills.png",
+      "assets/icons/skills/skills.png",
       {
         frameWidth: 32,
         frameHeight: 32,
@@ -85,7 +85,7 @@ export class UI extends Phaser.Scene {
 
     this.load.spritesheet(
       SPRITES.SKILL_KEYS.ONE,
-      "src/assets/icons/keys/keys.png",
+      "assets/icons/keys/keys.png",
       {
         frameWidth: 32,
         frameHeight: 32,
@@ -94,7 +94,7 @@ export class UI extends Phaser.Scene {
 
     this.load.spritesheet(
       SPRITES.SKILL_KEYS.TWO,
-      "src/assets/icons/keys/keys.png",
+      "assets/icons/keys/keys.png",
       {
         frameWidth: 32,
         frameHeight: 32,
@@ -103,7 +103,7 @@ export class UI extends Phaser.Scene {
 
     this.load.spritesheet(
       SPRITES.SKILL_KEYS.THREE,
-      "src/assets/icons/keys/keys.png",
+      "assets/icons/keys/keys.png",
       {
         frameWidth: 32,
         frameHeight: 32,

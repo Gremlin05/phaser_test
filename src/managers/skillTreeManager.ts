@@ -25,12 +25,12 @@ export class SkillTreeManager extends Phaser.Scene {
   preload() {
     this.load.image(
       SPRITES.SKILL_TREE.SKILL_TREE_CONTAINER,
-      "src/assets/skillTree/empty_skill_tree.png",
+      "assets/skillTree/empty_skill_tree.png",
     );
 
     this.load.spritesheet(
       SPRITES.SKILL_TREE.SKILLS.hp,
-      "src/assets/skillTree/skill_tree_icons.png",
+      "assets/skillTree/skill_tree_icons.png",
       {
         frameWidth: 32,
         frameHeight: 32,

@@ -130,29 +130,6 @@
                 }, 
                 {
                  "height":0,
-                 "id":36,
-                 "name":"swordman",
-                 "point":true,
-                 "properties":[
-                        {
-                         "name":"isPatrolling",
-                         "type":"bool",
-                         "value":false
-                        }, 
-                        {
-                         "name":"patrollingDirection",
-                         "type":"bool",
-                         "value":false
-                        }],
-                 "rotation":0,
-                 "type":"enemy",
-                 "visible":true,
-                 "width":0,
-                 "x":839.833333333333,
-                 "y":1215.16666666667
-                }, 
-                {
-                 "height":0,
                  "id":38,
                  "name":"player",
                  "point":true,
@@ -494,8 +471,7 @@
                  "width":0,
                  "x":791.833333333333,
                  "y":67.666666666667
-                },
-            
+                }, 
                 {
                  "height":0,
                  "id":145,
@@ -518,7 +494,8 @@
                  "width":0,
                  "x":763.833333333333,
                  "y":481
-                }, 
+                },
+            
                 {
                  "height":0,
                  "id":146,
@@ -633,8 +610,8 @@
                  "type":"",
                  "visible":true,
                  "width":0,
-                 "x":911.166666666667,
-                 "y":482.666666666667
+                 "x":569.166666666667,
+                 "y":1211.66666666667
                 }, 
                 {
                  "height":0,
@@ -651,8 +628,8 @@
                  "type":"",
                  "visible":true,
                  "width":0,
-                 "x":222.833333333333,
-                 "y":640
+                 "x":732.833333333333,
+                 "y":1218
                 }, 
                 {
                  "height":0,
@@ -669,8 +646,8 @@
                  "type":"",
                  "visible":true,
                  "width":0,
-                 "x":612.5,
-                 "y":1179.66666666667
+                 "x":340.5,
+                 "y":1205.66666666667
                 }, 
                 {
                  "height":0,
@@ -692,24 +669,6 @@
                 }, 
                 {
                  "height":0,
-                 "id":168,
-                 "name":"violet_flower",
-                 "point":true,
-                 "properties":[
-                        {
-                         "name":"type",
-                         "type":"string",
-                         "value":"flower"
-                        }],
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":0,
-                 "x":745.833333333333,
-                 "y":1281.66666666667
-                }, 
-                {
-                 "height":0,
                  "id":169,
                  "name":"violet_flower",
                  "point":true,
@@ -723,26 +682,8 @@
                  "type":"",
                  "visible":true,
                  "width":0,
-                 "x":420.833333333333,
-                 "y":1462.33333333333
-                }, 
-                {
-                 "height":0,
-                 "id":170,
-                 "name":"red_flower",
-                 "point":true,
-                 "properties":[
-                        {
-                         "name":"type",
-                         "type":"string",
-                         "value":"flower"
-                        }],
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":0,
-                 "x":196.5,
-                 "y":1196.33333333333
+                 "x":467.833333333333,
+                 "y":1211.33333333333
                 }, 
                 {
                  "height":0,
@@ -759,8 +700,8 @@
                  "type":"",
                  "visible":true,
                  "width":0,
-                 "x":253.166666666667,
-                 "y":1259
+                 "x":219.166666666667,
+                 "y":1202
                 }, 
                 {
                  "height":0,
@@ -903,8 +844,8 @@
                  "type":"",
                  "visible":true,
                  "width":0,
-                 "x":668.5,
-                 "y":485
+                 "x":657.5,
+                 "y":1211
                 }, 
                 {
                  "height":0,
@@ -927,8 +868,20 @@
                  "type":"",
                  "visible":true,
                  "width":0,
-                 "x":428.5,
-                 "y":1267
+                 "x":437.5,
+                 "y":988
+                }, 
+                {
+                 "height":0,
+                 "id":183,
+                 "name":"craft_table",
+                 "point":true,
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":345.5,
+                 "y":1303
                 }],
          "offsetx":-6.5,
          "offsety":-5,
@@ -1000,7 +953,7 @@
          "y":0
         }],
  "nextlayerid":6,
- "nextobjectid":183,
+ "nextobjectid":185,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.11.2",

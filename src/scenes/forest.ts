@@ -1,4 +1,4 @@
-import forestTilemapJSON from "../assets/tiles/forest.json";
+
 import { Enemy } from "../entity/enemies/enemy.ts";
 import { Archer } from "../entity/enemies/archer.ts";
 import { Swordman } from "../entity/enemies/swordman.ts";
@@ -22,6 +22,8 @@ import { Interactable } from "../entity/interactable/interactable.ts";
 import { EnergySphere } from "../entity/enemies/energy_sphere.ts";
 import { EnergySpawner } from "../entity/enemies/energy_spawner.ts";
 import { InventoryUI } from "./inventory/inventoryUI.ts";
+import { Build } from "../entity/buildings/build.ts";
+
 
 export class Forest extends Phaser.Scene {
   private player?: Player;
@@ -40,6 +42,7 @@ export class Forest extends Phaser.Scene {
   private violetFlowerTextureKey: string;
   private energySphereTextureKey: string;
   private energySpawnerTextureKey: string;
+  private craftTableTextureKey: string;
 
   private animsFrameRate: number;
   private highFrameRate: number = 12;
@@ -53,6 +56,7 @@ export class Forest extends Phaser.Scene {
   private interactableGroup: Phaser.Physics.Arcade.Group;
   private inventoryUI: InventoryUI;
   private inventoryKey: Phaser.Input.Keyboard.Key;
+  
 
   private glow: any;
 
@@ -74,32 +78,34 @@ export class Forest extends Phaser.Scene {
     this.violetFlowerTextureKey = SPRITES.INTERACTABLES.VIOLET_FLOWER;
     this.energySphereTextureKey = SPRITES.ENEMIES.ENERGY_SPHERE;
     this.energySpawnerTextureKey = SPRITES.ENEMIES.ENERGY_SPAWNER;
+    this.craftTableTextureKey = SPRITES.BUILDINGS.CRAFT_TABLE;
+
 
     this.animsFrameRate = 3;
   }
 
   preload() {
-    this.load.image(TILES.FOREST, "src/assets/tiles/forest.png");
-    this.load.tilemapTiledJSON("forestMap", "src/assets/tiles/forest.json");
+    this.load.image(TILES.FOREST, "assets/tiles/forest.png");
+    this.load.tilemapTiledJSON("forestMap", "assets/tiles/forest.json");
     this.load.spritesheet(
       SPRITES.PLAYER,
-      "src/assets/characters/player/player.png",
+      "assets/characters/player/player.png",
       {
         frameWidth: 32,
         frameHeight: 32,
       },
     );
-    this.load.spritesheet(SPRITES.MAGIC, "src/assets/magic/fire_skills.png", {
+    this.load.spritesheet(SPRITES.MAGIC, "assets/magic/fire_skills.png", {
       frameWidth: 32,
       frameHeight: 32,
     });
-    this.load.spritesheet(SPRITES.POINTER, "src/assets/pointer/pointer.png", {
+    this.load.spritesheet(SPRITES.POINTER, "assets/pointer/pointer.png", {
       frameWidth: 16,
       frameHeight: 16,
     });
     this.load.spritesheet(
       SPRITES.ENEMIES.SWORDMAN,
-      "src/assets/characters/enemies/enemy_swordman.png",
+      "assets/characters/enemies/enemy_swordman.png",
       {
         frameWidth: 32,
         frameHeight: 32,
@@ -108,7 +114,7 @@ export class Forest extends Phaser.Scene {
 
     this.load.spritesheet(
       SPRITES.ENEMIES.ARCHER,
-      "src/assets/characters/enemies/enemy_archer.png",
+      "assets/characters/enemies/enemy_archer.png",
       {
         frameWidth: 32,
         frameHeight: 32,
@@ -117,7 +123,7 @@ export class Forest extends Phaser.Scene {
 
     this.load.spritesheet(
       SPRITES.WEAPONS.SWORD,
-      "src/assets/weapons/weapons.png",
+      "assets/weapons/weapons.png",
       {
         frameWidth: 32,
         frameHeight: 32,
@@ -126,7 +132,7 @@ export class Forest extends Phaser.Scene {
 
     this.load.spritesheet(
       SPRITES.WEAPONS.BOW,
-      "src/assets/weapons/weapons.png",
+      "assets/weapons/weapons.png",
       {
         frameWidth: 32,
         frameHeight: 32,
@@ -135,7 +141,7 @@ export class Forest extends Phaser.Scene {
 
     this.load.spritesheet(
       SPRITES.WEAPONS.ARRROW,
-      "src/assets/weapons/arrow.png",
+      "assets/weapons/arrow.png",
       {
         frameWidth: 32,
         frameHeight: 32,
@@ -144,7 +150,7 @@ export class Forest extends Phaser.Scene {
 
     this.load.spritesheet(
       SPRITES.BUILDINGS.ARCANE_GATES_COLUMN,
-      "src/assets/buildings/arcane_gates_column.png",
+      "assets/buildings/arcane_gates_column.png",
       {
         frameWidth: 32,
         frameHeight: 72,
@@ -153,7 +159,7 @@ export class Forest extends Phaser.Scene {
 
     this.load.spritesheet(
       SPRITES.BUILDINGS.ARCANE_GATES,
-      "src/assets/buildings/arcane_gates.png",
+      "assets/buildings/arcane_gates.png",
       {
         frameWidth: 100,
         frameHeight: 49,
@@ -162,7 +168,7 @@ export class Forest extends Phaser.Scene {
 
     this.load.spritesheet(
       SPRITES.BUILDINGS.BUTTON,
-      "src/assets/buildings/button.png",
+      "assets/buildings/button.png",
       {
         frameWidth: 32,
         frameHeight: 32,
@@ -171,7 +177,7 @@ export class Forest extends Phaser.Scene {
 
     this.load.spritesheet(
       SPRITES.BUILDINGS.PORTAL,
-      "src/assets/buildings/portal.png",
+      "assets/buildings/portal.png",
       {
         frameWidth: 32,
         frameHeight: 32,
@@ -180,7 +186,7 @@ export class Forest extends Phaser.Scene {
 
     this.load.spritesheet(
       SPRITES.BUILDINGS.ARCANE_TOWER,
-      "src/assets/buildings/arcane_tower.png",
+      "assets/buildings/arcane_tower.png",
       {
         frameWidth: 36,
         frameHeight: 72,
@@ -189,7 +195,7 @@ export class Forest extends Phaser.Scene {
 
     this.load.spritesheet(
       SPRITES.BUILDINGS.FIRE_TOWER,
-      "src/assets/buildings/fire_tower.png",
+      "assets/buildings/fire_tower.png",
       {
         frameWidth: 32,
         frameHeight: 72,
@@ -198,7 +204,7 @@ export class Forest extends Phaser.Scene {
 
     this.load.spritesheet(
       SPRITES.EXP_SPHERE,
-      "src/assets/skillTree/exp_sphere.png",
+      "assets/skillTree/exp_sphere.png",
       {
         frameWidth: 32,
         frameHeight: 32,
@@ -207,7 +213,7 @@ export class Forest extends Phaser.Scene {
 
     this.load.spritesheet(
       SPRITES.INTERACTABLES.AMETHYST_ORE,
-      "src/assets/interactable/ore/ametisy_ore.png",
+      "assets/interactable/ore/ametisy_ore.png",
       {
         frameWidth: 32,
         frameHeight: 32,
@@ -216,7 +222,7 @@ export class Forest extends Phaser.Scene {
 
     this.load.spritesheet(
       SPRITES.INTERACTABLES.GOLD_ORE,
-      "src/assets/interactable/ore/gold_ore.png",
+      "assets/interactable/ore/gold_ore.png",
       {
         frameWidth: 32,
         frameHeight: 32,
@@ -225,7 +231,7 @@ export class Forest extends Phaser.Scene {
 
     this.load.spritesheet(
       SPRITES.INTERACTABLES.EMERALD_ORE,
-      "src/assets/interactable/ore/emerald_ore.png",
+      "assets/interactable/ore/emerald_ore.png",
       {
         frameWidth: 32,
         frameHeight: 32,
@@ -233,7 +239,7 @@ export class Forest extends Phaser.Scene {
     );
     this.load.spritesheet(
       SPRITES.INTERACTABLES.VIOLET_FLOWER,
-      "src/assets/interactable/flowers/flower_violet.png",
+      "assets/interactable/flowers/flower_violet.png",
       {
         frameWidth: 32,
         frameHeight: 32,
@@ -241,7 +247,7 @@ export class Forest extends Phaser.Scene {
     );
     this.load.spritesheet(
       SPRITES.INTERACTABLES.GREEN_FLOWER,
-      "src/assets/interactable/flowers/flower_green.png",
+      "assets/interactable/flowers/flower_green.png",
       {
         frameWidth: 32,
         frameHeight: 32,
@@ -249,7 +255,7 @@ export class Forest extends Phaser.Scene {
     );
     this.load.spritesheet(
       SPRITES.INTERACTABLES.RED_FLOWER,
-      "src/assets/interactable/flowers/flower_red.png",
+      "assets/interactable/flowers/flower_red.png",
       {
         frameWidth: 32,
         frameHeight: 32,
@@ -257,7 +263,7 @@ export class Forest extends Phaser.Scene {
     );
     this.load.spritesheet(
       SPRITES.INTERACTABLES.HOVER_EFFECT,
-      "src/assets/interactable/hover_effect.png",
+      "assets/interactable/hover_effect.png",
       {
         frameWidth: 32,
         frameHeight: 32,
@@ -266,7 +272,7 @@ export class Forest extends Phaser.Scene {
 
     this.load.spritesheet(
       SPRITES.INTERACTABLES.INTERACT_ICON,
-      "src/assets/interactable/interact_icon.png",
+      "assets/interactable/interact_icon.png",
       {
         frameWidth: 32,
         frameHeight: 32,
@@ -274,7 +280,7 @@ export class Forest extends Phaser.Scene {
     );
     this.load.spritesheet(
       SPRITES.ENEMIES.ENERGY_SPHERE,
-      "src/assets/characters/enemies/energy_sphere.png",
+      "assets/characters/enemies/energy_sphere.png",
       {
         frameWidth: 32,
         frameHeight: 32,
@@ -282,7 +288,7 @@ export class Forest extends Phaser.Scene {
     );
     this.load.spritesheet(
       SPRITES.ENEMIES.ENERGY_SPAWNER,
-      "src/assets/characters/enemies/energy_spawner.png",
+      "assets/characters/enemies/energy_spawner.png",
       {
         frameWidth: 32,
         frameHeight: 32,
@@ -291,12 +297,30 @@ export class Forest extends Phaser.Scene {
 
     this.load.spritesheet(
       SPRITES.INTERACTABLES.MATERIALS_ICONS,
-      "src/assets/interactable/icons/materials.png",
+      "assets/interactable/icons/materials.png",
       {
         frameWidth: 32,
         frameHeight: 32,
       }
-    )
+    );
+
+    this.load.spritesheet(
+      SPRITES.BUILDINGS.CRAFT_TABLE,
+      "assets/buildings/craft_table.png",
+      {
+        frameWidth: 64,
+        frameHeight: 32,
+      }
+    );
+
+    this.load.spritesheet(
+      SPRITES.INTERACTABLES.POTIONS,
+      "assets/interactable/potions.png",
+      {
+        frameWidth: 32,
+        frameHeight: 32,
+      }
+    );
   }
 
   create() {
@@ -587,7 +611,7 @@ export class Forest extends Phaser.Scene {
     //#region MAP
     const forestMap = this.make.tilemap({ key: "forestMap" });
     const tileSet = forestMap.addTilesetImage(
-      forestTilemapJSON.tilesets[0].name,
+      "forest_tiles",
       TILES.FOREST,
       SIZE.TILE,
       SIZE.TILE,
@@ -647,6 +671,7 @@ export class Forest extends Phaser.Scene {
     this.scene.launch("UI");
     this.scene.launch("SkillTreeManager");
     this.scene.launch("INV", {player: this.player})
+    this.scene.launch("CRAFT_UI", { player: this.player });
     this.inventoryUI = this.scene.get("INV") as InventoryUI;
     //#endregion PLAYER
 
@@ -711,6 +736,23 @@ export class Forest extends Phaser.Scene {
           obj.y - obj.height,
           SPRITES.BUILDINGS.ARCANE_GATES,
         );
+
+        this.buildingGroup.add(building);
+      }
+    });
+
+    this.objects.objects.forEach((obj: any) => {
+      if (obj.name === "craft_table") {
+        const building = new Interactable(
+          this,
+          obj.x,
+          obj.y - obj.height,
+          this.craftTableTextureKey,
+          "craftTable",
+          "craft_table",
+          this.player
+        );
+        building.setScale(1)
 
         this.buildingGroup.add(building);
       }

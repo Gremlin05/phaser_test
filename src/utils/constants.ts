@@ -45,7 +45,8 @@ export const SPRITES = {
         ARCANE_TOWER: "ArcaneTower",
         FIRE_TOWER: "FireTower",
         BUTTON: "Button",
-        PORTAL: "Portal"
+        PORTAL: "Portal",
+        CRAFT_TABLE: "CraftTable",
     },
 
     SKILL_ICONS: {
@@ -89,6 +90,7 @@ export const SPRITES = {
         HOVER_EFFECT: "HOVER_EFFECT",
         INTERACT_ICON: "INTERCAT_ICON",
         MATERIALS_ICONS: "MATERIALS_ICON",
+        POTIONS: "POTIONS"
         
     }
 

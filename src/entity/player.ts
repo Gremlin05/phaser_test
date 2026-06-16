@@ -4,6 +4,7 @@ import { PLAYER_PROPERTIES } from "../utils/constants";
 import { Magic } from "./magic";
 import { Inventory } from "../scenes/inventory/inventory";
 import type { Interactable } from "./interactable/interactable";
+import type { CraftUI } from "../scenes/inventory/craftingUI";
 
 export class Player extends Entity {
   textureKey: string;
@@ -14,7 +15,7 @@ export class Player extends Entity {
   private mana: number;
   private maxMana: number;
   public exp: number;
-  public inventory: Inventory
+  public inventory: Inventory;
 
   private hpRegenRate: number;
   private manaRegenRate: number;
@@ -23,12 +24,14 @@ export class Player extends Entity {
 
   private keys: Phaser.Types.Input.Keyboard.CursorKeys;
   private interactKey: Phaser.Input.Keyboard.Key;
+  private craftKey: Phaser.Input.Keyboard.Key;
   private skillKeys;
 
   private magicGroup: Phaser.Physics.Arcade.Group;
 
   public currentTarget: any = null;
-  public interactTarget: Interactable
+  public interactTarget: Interactable;
+  public canCraft: boolean = false;
 
   constructor(
     scene: Phaser.Scene,
@@ -69,9 +72,10 @@ export class Player extends Entity {
       right: Phaser.Input.Keyboard.KeyCodes.D,
     }) as Phaser.Types.Input.Keyboard.CursorKeys;
     this.skillKeys = scene.input.keyboard.addKeys("ONE, TWO, THREE");
-    this.interactKey = scene.input.keyboard.addKey("E")
+    this.interactKey = scene.input.keyboard.addKey("E");
+    this.craftKey = scene.input.keyboard.addKey("F");
 
-    this.inventory = new Inventory(20)
+    this.inventory = new Inventory(20);
   }
 
   moveMent(): void {
@@ -235,21 +239,28 @@ export class Player extends Entity {
   }
 
   handleInteract(): void {
-    if (!Phaser.Input.Keyboard.JustDown(this.interactKey))
-    {
+    if (!Phaser.Input.Keyboard.JustDown(this.interactKey)) {
       return;
     }
 
     const nearby = this.interactTarget;
-    if(nearby && nearby.distance <= nearby.distanceForInteract)
-    {
+    if (nearby && nearby.distance <= nearby.distanceForInteract) {
       nearby.giveLoot();
       console.log(this.inventory.getItems());
     }
   }
+  
+  handleCraftOpen(): void {
+  if (!Phaser.Input.Keyboard.JustDown(this.craftKey)) return;
+  if (!this.canCraft) return;
+
+  const ui = this.scene.scene.get("CRAFT_UI") as CraftUI;
+  ui.toggle();
+}
 
   update(): void {
     this.handleInteract();
+    this.handleCraftOpen();
     this.moveMent();
     this.castSkills();
   }

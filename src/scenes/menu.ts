@@ -6,10 +6,10 @@ export class Menu extends Phaser.Scene {
   }
 
   preload() {
-    this.load.image(SPRITES.UI.BACKGROUND, "src/assets/UI/background.png");
+    this.load.image(SPRITES.UI.BACKGROUND, "assets/UI/background.png");
     this.load.spritesheet(
       SPRITES.UI.PLAY_BUTTON,
-      "src/assets/UI/play_button.png",
+      "assets/UI/play_button.png",
       {
         frameWidth: 75,
         frameHeight: 25,

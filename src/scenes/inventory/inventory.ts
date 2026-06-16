@@ -1,4 +1,5 @@
 import { SPRITES } from "../../utils/constants";
+import { CRAFT_RECIPES } from "./crafting";
 
 export type ItemId = string;
 
@@ -66,4 +67,36 @@ export class Inventory {
     const item = this.items.get(id);
     return !!item && item.amount >= amount;
   }
+
+craft(resultId: string): boolean {
+  const recipe = CRAFT_RECIPES.find(r => r.result.id === resultId);
+  if (!recipe) return false;
+
+  // проверка ресурсов
+  const canCraft = recipe.ingredients.every(i =>
+    this.hasItem(i.id, i.amount)
+  );
+
+  if (!canCraft) return false;
+
+  // списываем ресурсы
+  recipe.ingredients.forEach(i => {
+    this.removeItem(i.id, i.amount);
+  });
+
+  // добавляем предмет
+  const r = recipe.result;
+
+  this.addItem(
+    r.id,
+    r.name,
+    1,
+    99,
+    r.texture,
+    r.frame
+  );
+
+  return true;
+}
+
 }

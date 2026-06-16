@@ -66,6 +66,10 @@ export class Interactable extends Phaser.Physics.Arcade.Sprite {
         this.endRange = 1;
         break;
       }
+      case "craft_table": {
+        this.endRange = 1;
+        break;
+      }
     }
   }
 
@@ -115,43 +119,42 @@ export class Interactable extends Phaser.Physics.Arcade.Sprite {
         id: "gold_ore",
         name: "Gold Ore",
         texture: SPRITES.INTERACTABLES.MATERIALS_ICONS,
-        frame: 3
-        
+        frame: 3,
       },
 
       emerald_ore: {
         id: "emerald_ore",
         name: "Emerald Ore",
         texture: SPRITES.INTERACTABLES.MATERIALS_ICONS,
-        frame: 5
+        frame: 5,
       },
 
       amethyst_ore: {
         id: "amethyst_ore",
         name: "Amethyst Ore",
         texture: SPRITES.INTERACTABLES.MATERIALS_ICONS,
-        frame: 4
+        frame: 4,
       },
 
       red_flower: {
         id: "red_flower",
         name: "Red Flower",
         texture: SPRITES.INTERACTABLES.MATERIALS_ICONS,
-        frame: 2
+        frame: 2,
       },
 
       green_flower: {
         id: "green_flower",
         name: "Green Flower",
         texture: SPRITES.INTERACTABLES.MATERIALS_ICONS,
-        frame: 1
+        frame: 1,
       },
 
       violet_flower: {
         id: "violet_flower",
         name: "Violet Flower",
         texture: SPRITES.INTERACTABLES.MATERIALS_ICONS,
-        frame: 0
+        frame: 0,
       },
     };
 
@@ -162,7 +165,14 @@ export class Interactable extends Phaser.Physics.Arcade.Sprite {
       return;
     }
 
-    this.target.inventory.addItem(loot.id, loot.name, 1,99, loot.texture,loot.frame );
+    this.target.inventory.addItem(
+      loot.id,
+      loot.name,
+      1,
+      99,
+      loot.texture,
+      loot.frame,
+    );
     this.scene.events.emit(
       "inventoryChanged",
       this.target.inventory.getItems(),
@@ -189,6 +199,18 @@ export class Interactable extends Phaser.Physics.Arcade.Sprite {
       }
 
       this.hideIntercatIcon();
+    }
+
+    if (this.lootType === "craft_table") {
+      if (this.distance <= this.distanceForInteract) {
+        this.target.canCraft = true;
+      } else {
+        if (this.target.interactTarget === this) {
+          this.target.interactTarget = null;
+        }
+
+        this.target.canCraft = false;
+      }
     }
   }
 }
